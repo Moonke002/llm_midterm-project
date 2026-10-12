@@ -1,7 +1,6 @@
 """Train simple CNN and LSTM models for LLM attribution."""
 
 import argparse
-import json
 import random
 import re
 from collections import Counter
@@ -10,8 +9,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 import torch
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import accuracy_score, classification_report, f1_score
 from sklearn.model_selection import train_test_split
 from torch import nn
@@ -262,44 +259,6 @@ def describe_style(frame, output_dir):
     summary.to_csv(output_dir / "style_features.csv")
 
 
-def run_domain_holdout(frame, output_dir):
-    """Evaluate generalization across source dataset groups."""
-    # Hold out one source category for evaluation
-    domain_counts = frame.groupby("source_dataset")["LLM_name"].nunique()
-    domains = domain_counts[domain_counts == frame["LLM_name"].nunique()].index
-    if len(domains) < 2:
-        stale_result = output_dir / "rq3_domain_holdout.csv"
-        if stale_result.exists():
-            stale_result.unlink()
-        print("RQ3 skipped: fewer than two shared source datasets.")
-        return
-
-    chosen = frame[frame["source_dataset"].isin(domains)]
-    chosen_domain = chosen["source_dataset"].value_counts().idxmin()
-    train = chosen[chosen["source_dataset"] != chosen_domain]
-    test = chosen[chosen["source_dataset"] == chosen_domain]
-    vectorizer = TfidfVectorizer(
-        max_features=12000, ngram_range=(1, 2), min_df=2
-    )
-    train_x = vectorizer.fit_transform(train["LLM_output"])
-    test_x = vectorizer.transform(test["LLM_output"])
-    classifier = LogisticRegression(max_iter=1000, class_weight="balanced")
-    classifier.fit(train_x, train["LLM_name"])
-    predictions = classifier.predict(test_x)
-    record = {
-        "held_out_source_dataset": chosen_domain,
-        "train_rows": len(train),
-        "test_rows": len(test),
-        "accuracy": accuracy_score(test["LLM_name"], predictions),
-        "macro_f1": f1_score(test["LLM_name"], predictions,
-                              average="macro"),
-    }
-    pd.DataFrame([record]).to_csv(
-        output_dir / "rq3_domain_holdout.csv", index=False
-    )
-    print("RQ3 result:", json.dumps(record, indent=2))
-
-
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     # Compare both models across three text views
@@ -388,7 +347,6 @@ def main():
         "\n\n".join(report_rows), encoding="utf-8"
     )
     describe_style(frame, output_dir)
-    run_domain_holdout(frame, output_dir)
     print(f"Results saved in {output_dir.resolve()}")
 
 

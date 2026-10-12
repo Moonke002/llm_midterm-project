@@ -59,10 +59,8 @@ same tokenization, 64-dimensional embeddings, Adam optimizer, and four epochs.
 
 The script reports accuracy and macro-F1 for all six input/architecture
 combinations. It also saves output-only confusion matrices, class-level
-reports, response style summaries, and an optional RQ3 source-dataset holdout.
-RQ3 uses source datasets as a domain proxy only when multiple safe source
-categories exist in the subset. RQ4 summaries are descriptive and do not prove
-which features caused a prediction.
+reports, and response style summaries. The style summaries are descriptive
+and do not prove which features caused a prediction.
 
 Results are written to `results/`:
 
@@ -70,7 +68,6 @@ Results are written to `results/`:
 - `classification_reports.md`
 - `confusion_CNN.csv` and `confusion_RNN.csv`
 - `style_features.csv`
-- `rq3_domain_holdout.csv`, when enough shared source categories exist
 
 ## Build the report
 
