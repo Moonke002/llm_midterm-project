@@ -56,6 +56,7 @@ responses to the same prompt leaking across splits. The test split is 20% of
 prompt IDs; 20% of the remaining IDs are used for validation. Vocabulary is
 learned from training text only. CNN and bidirectional LSTM models use the
 same tokenization, 64-dimensional embeddings, Adam optimizer, and four epochs.
+Training uses cross-entropy loss and batches of 64 examples.
 
 The script reports accuracy and macro-F1 for all six input/architecture
 combinations. It also saves output-only confusion matrices, class-level

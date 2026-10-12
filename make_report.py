@@ -334,10 +334,10 @@ def report_story(data_dir, results_dir, team_leader):
         paragraph(
             "I lowercased the text and split it into words and punctuation. "
             "The vocabulary came from training text only and held up to 12,000 "
-            "tokens. Both models used 64-dimension embeddings, dropout of 0.3, "
-            "Adam with a 0.001 learning rate, and four training epochs. Inputs "
-            "were limited to 128 tokens. For prompt plus response, I reserved "
-            "64 tokens for each. I used seed 42."
+            "tokens. Both models used 64-dimensional embeddings, dropout of "
+            "0.3, Adam at 0.001, cross-entropy loss, batch size 64, and four "
+            "epochs. Inputs were limited to 128 tokens. For prompt plus "
+            "response, I reserved 64 tokens for each. I used seed 42."
         ),
         make_table(
             [
