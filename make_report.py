@@ -352,14 +352,15 @@ def report_story(data_dir, results_dir, team_leader):
             "I report accuracy and macro-F1. With three balanced families, "
             f"chance accuracy is {percent(1 / len(labels))}."
         ),
-        Paragraph("4. Question 1: Can a response identify its model family?", styles["Section"]),
+        Paragraph("4. RQ1: Can a response identify its model family?", styles["Section"]),
         lead(
             "Question",
             "Can a CNN or LSTM identify the model from the response alone?",
         ),
         lead(
-            "Final understanding",
-            f"Yes, in this test. The response-only CNN reached "
+            "Answer",
+            f"Yes, both models scored above the {percent(1 / len(labels))} "
+            f"chance level. The response-only CNN reached "
             f"{percent(metric('output_only', 'CNN', 'accuracy'))} accuracy and "
             f"{percent(metric('output_only', 'CNN', 'macro_f1'))} macro-F1. "
             f"The LSTM reached {percent(metric('output_only', 'RNN', 'accuracy'))} "
@@ -392,19 +393,20 @@ def report_story(data_dir, results_dir, team_leader):
             [1.2 * inch, 1.2 * inch, 1.25 * inch, 1.2 * inch, 1.35 * inch],
         ),
         PageBreak(),
-        Paragraph("5. Question 2: Does the prompt help?", styles["Section"]),
+        Paragraph("5. RQ2: Does the prompt help identify the model?", styles["Section"]),
         lead(
             "Question",
             "Can the prompt identify the model before a response is seen? "
             "Does it improve the result when added to the response?",
         ),
         lead(
-            "Final understanding",
-            "The prompt alone scored 33.3% for both models, the three-class "
-            "chance level. Adding the prompt did not improve the response-only "
-            "scores. The combined CNN reached 46.9% accuracy; the combined "
-            "LSTM reached 35.3%. Since all three models answered each selected "
-            "prompt, the prompt by itself did not reveal the label.",
+            "Answer",
+            "No, not in this experiment. Prompt-only accuracy was 33.3% for "
+            "both models, equal to chance. Adding the prompt also lowered "
+            "accuracy: the CNN went from 58.6% with responses alone to 46.9%, "
+            "and the LSTM went from 51.9% to 35.3%. All three model families "
+            "answered the same selected prompts, so the prompt alone did not "
+            "identify the family.",
         ),
         paragraph(
             "The combined model saw only 64 response tokens because its "
@@ -440,15 +442,18 @@ def report_story(data_dir, results_dir, team_leader):
             "Figure 2. Rows show the actual family; columns show the prediction.",
             styles["Caption"],
         ),
-        Paragraph("6. Response feature differences", styles["Section"]),
+        Paragraph("6. RQ4: Which response features differ by model family?", styles["Section"]),
         lead(
             "Question",
             "Do response length, vocabulary, punctuation, or formatting differ?",
         ),
         lead(
-            "Final understanding",
-            "The measurements show some differences. They do not prove that any "
-            "one feature caused the classifiers' predictions.",
+            "Answer",
+            "Average response length and the measured style features differ. "
+            "Qwen responses were longest at 381 words on average; OLMo responses "
+            "were shortest at 224 words and had the highest word-variety ratio. "
+            "Gemma had the highest punctuation rate. These measurements do not "
+            "show which features caused the classifiers' predictions.",
         ),
         make_table(
             [
