@@ -83,7 +83,7 @@ python make_report.py --team-leader "Brayden Aubry"
 The PDF is saved in `output/pdf/`. Edit `--team-leader` if the submission's
 leader is different; add other team members to the report source if needed.
 
-## Suggested citation
+## Citation
 
 Team Olmo et al. (2025), *Olmo 3*, technical report and
 [Dolci DPO Model Response Pool](https://huggingface.co/datasets/allenai/Dolci-DPO-Model-Response-Pool).
