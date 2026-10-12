@@ -320,9 +320,8 @@ def report_story(data_dir, results_dir, team_leader):
         ),
         Spacer(1, 4),
         paragraph(
-            f"I used {data['source_dataset'].nunique()} source category after "
-            "filtering. The data CSV is not included in the repository; the "
-            "preparation script rebuilds it."
+            "The data CSV is not included in the repository; the preparation "
+            "script rebuilds it."
         ),
         data_steps,
         Paragraph("3. Models and training", styles["Section"]),
@@ -441,18 +440,7 @@ def report_story(data_dir, results_dir, team_leader):
             "Figure 2. Rows show the actual family; columns show the prediction.",
             styles["Caption"],
         ),
-        Paragraph("6. Question 3: Does it work on a new task?", styles["Section"]),
-        lead(
-            "Question",
-            "Would a model trained on one task type identify a model on another?",
-        ),
-        lead(
-            "Final understanding",
-            "I did not run this test. After filtering, the dataset had one shared "
-            "source category, so there was no separate category to hold out. "
-            "This leaves cross-task generalization unanswered.",
-        ),
-        Paragraph("7. Question 4: What response features differ?", styles["Section"]),
+        Paragraph("6. Response feature differences", styles["Section"]),
         lead(
             "Question",
             "Do response length, vocabulary, punctuation, or formatting differ?",
@@ -493,7 +481,7 @@ def report_story(data_dir, results_dir, team_leader):
             "word-variety ratio. Gemma had the highest punctuation rate. These "
             "averages do not describe every response."
         ),
-        Paragraph("8. Challenges and how I addressed them", styles["Section"]),
+        Paragraph("7. Challenges and how I addressed them", styles["Section"]),
         paragraph(
             "The source included rows from several collections, so I used the "
             "verified permissive category and simple text checks for the dataset. "
@@ -507,7 +495,7 @@ def report_story(data_dir, results_dir, team_leader):
             "limit or a separate experiment with more response tokens could "
             "change those results."
         ),
-        Paragraph("9. Key lessons learned", styles["Section"]),
+        Paragraph("8. Key lessons learned", styles["Section"]),
         ListFlowable(
             [
                 ListItem(paragraph("The response text was more useful than the prompt for identifying the model.")),
@@ -523,7 +511,7 @@ def report_story(data_dir, results_dir, team_leader):
             bulletColor=BLUE,
             spaceAfter=3,
         ),
-        Paragraph("10. Conclusion", styles["Section"]),
+        Paragraph("9. Conclusion", styles["Section"]),
         paragraph(
             "The response-only CNN identified the model family better than "
             "chance, but its accuracy was 58.6%. The prompt alone did not help, "
